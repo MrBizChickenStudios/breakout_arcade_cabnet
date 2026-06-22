@@ -1,4 +1,6 @@
 ## Todo
 
 * [ ] Add State manager
-* [ ] Be GAY
+* [ ] Add Menu
+* [ ] Add Buttons In Menu
+* [ ] Add Touch 
