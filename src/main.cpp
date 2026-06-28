@@ -1,33 +1,56 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
-#include "Ball.h"
-#include "Tft.h"
-#include "Constants.h"
+#include "Touch.h"
 #include "ButtonObject.h"
+#include "Ball.h"
 
-Ball ball(160, 120, 10);
+TFT_eSPI tft;
 
-
+Ball ball(tft.height() / 2 , tft.width() / 2, 10);
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 
-void setup() {
+bool gameEnabled = false;
 
+ButtonObject pongButton(50, 100, 140, 60, 10, "PONG");
+
+void setup() {
     Serial.begin(115200);
+
     tft.init();
-    SCREEN_WIDTH = tft.height(); ;
-    SCREEN_HEIGHT = tft.width();
-    tft.invertDisplay(false);
     tft.setRotation(1);
-    tft.fillScreen(TFT_BLACK);
+    tft.fillScreen(TFT_WHITE);
+    SCREEN_WIDTH = tft.width(); ;
+    SCREEN_HEIGHT = tft.height();
+
+    touchSetup();
+
+    pongButton.draw();
+
+    
+    pongButton.onClick = []() {
+        gameEnabled = !gameEnabled;
+
+        if (!gameEnabled) {
+            tft.fillScreen(TFT_WHITE);
+            ball.reset();
+            pongButton.draw();
+        }
+    };
 }
-ButtonObject button(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 - 25, 100, 50, 10);
 
 void loop() {
-    ball.update();
-    ball.draw();
-    button.draw();
 
+    if (touchPressed()) {
+        TS_Point t = getTouch();
 
-    delay(1000 / 60);
+        pongButton.handleTouch(t.x, t.y);
+        delay(150);
+    }
+
+    if (gameEnabled) {
+        ball.update();
+        ball.draw();
+        delay(20);
+    }
 }

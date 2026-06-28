@@ -11,12 +11,15 @@ public:
     int y;
     int radius;
     int deltaX;
-    int dletaY;
+    int deltaY;
     int oldX;
     int oldY;
+    int startX;
+    int startY;
 
     Ball(int startX, int startY, int r);
 
     void draw();
     void update();
+    void reset();
 };

@@ -3,26 +3,35 @@
 
 
 Ball::Ball(int startX, int startY, int r) {
+    this->startX = startX;
+    this->startY = startY;
     x = startX;
     y = startY;
     radius = r;
     deltaX = 2;
-    dletaY = 2;
+    deltaY = 2;
     oldX = startX;
     oldY = startY;
 }
 
 void Ball::draw() {
-    tft.fillCircle(oldX, oldY, radius, TFT_BLACK);
-    tft.fillCircle(x, y, radius, TFT_WHITE);
+    tft.fillCircle(oldX, oldY, radius, TFT_WHITE);
+    tft.fillCircle(x, y, radius, TFT_BLACK);
    
+}
+
+void Ball::reset() {
+    x = startX;
+    y = startY;
+    oldX = startX;
+    oldY = startY;
 }
 
 void Ball::update(){
     oldX = x;
     oldY = y;
     x += deltaX;
-    y += dletaY;
+    y += deltaY;
 
     if (x - radius <= 0) {
         x = radius;
@@ -34,10 +43,10 @@ void Ball::update(){
 
     if (y - radius <= 0) {
         y = radius;
-        dletaY = -dletaY;
+        deltaY = -deltaY;
     } else if (y + radius >= SCREEN_HEIGHT) {
         y = SCREEN_HEIGHT - radius;
-        dletaY = -dletaY;
+        deltaY = -deltaY;
     }
 }
 
