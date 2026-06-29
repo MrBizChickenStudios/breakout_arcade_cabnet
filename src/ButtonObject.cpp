@@ -33,6 +33,6 @@ void ButtonObject::handleTouch(int tx, int ty) {
     draw();
 
     if (onClick) {
-        onClick();   // 🔥 run whatever main assigned
+        onClick();  
     }
 }

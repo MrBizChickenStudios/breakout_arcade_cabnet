@@ -3,6 +3,9 @@
 #include "Touch.h"
 #include "ButtonObject.h"
 #include "Ball.h"
+#include "GamePad.h"
+
+
 
 TFT_eSPI tft;
 
@@ -27,7 +30,8 @@ void setup() {
 
     pongButton.draw();
 
-    
+    gamepadBegin();
+
     pongButton.onClick = []() {
         gameEnabled = !gameEnabled;
 
@@ -41,16 +45,34 @@ void setup() {
 
 void loop() {
 
-    if (touchPressed()) {
-        TS_Point t = getTouch();
+    // if (touchPressed()) {
+    //     TS_Point t = getTouch();
 
-        pongButton.handleTouch(t.x, t.y);
-        delay(150);
-    }
+    //     pongButton.handleTouch(t.x, t.y);
+    //     delay(150);
+    // }
 
-    if (gameEnabled) {
-        ball.update();
-        ball.draw();
-        delay(20);
-    }
+    // if (gameEnabled) {
+    //     ball.update();
+    //     ball.draw();
+    //     delay(20);
+    // }
+
+     gamepadUpdate();
+    if (gamepadGet(0)) Serial.println("Button 0 pressed");
+    if (gamepadGet(1)) Serial.println("Button 1 pressed");
+    if (gamepadGet(2)) Serial.println("Button 2 pressed");
+    if (gamepadGet(3)) Serial.println("Button 3 pressed");
+    if (gamepadGet(4)) Serial.println("Button 4 pressed");
+    if (gamepadGet(5)) Serial.println("Button 5 pressed");
+    if (gamepadGet(6)) Serial.println("Button 6 pressed");
+    if (gamepadGet(7)) Serial.println("Button 7 pressed");
+
+    // delay(100);
+
+    // digitalWrite(27, HIGH);
+    // delay(50);
+    // digitalWrite(27, LOW);
+    // delay(50);    
+
 }
