@@ -4,75 +4,116 @@
 #include "ButtonObject.h"
 #include "Ball.h"
 #include "GamePad.h"
-
-
+#include "Paddle.h"
 
 TFT_eSPI tft;
 
-Ball ball(tft.height() / 2 , tft.width() / 2, 10);
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 
-bool gameEnabled = false;
+Paddle paddle(100, 100, 50, 10, 5);
+Ball ball(tft.width() / 2, tft.height() / 2, 10);
 
-ButtonObject pongButton(50, 100, 140, 60, 10, "PONG");
+bool pongGameEnabled = false;
+bool breakoutGameEnabled = false;
 
+ButtonObject pongButton(30, 100, 80, 60, 10, "PONG");
+ButtonObject breakoutButton(130, 100, 80, 60, 10, "BREAKOUT");
+
+
+void drawMenu() {
+    tft.fillScreen(TFT_WHITE);
+    pongButton.draw();
+    breakoutButton.draw();
+}
+
+void menu(){
+    if (gamepadGet(3)) {
+
+        pongGameEnabled = false;
+        breakoutGameEnabled = false;
+
+        ball.reset();
+
+
+        tft.fillScreen(TFT_WHITE);
+
+        drawMenu();
+    }
+}
 void setup() {
     Serial.begin(115200);
 
     tft.init();
     tft.setRotation(1);
-    tft.fillScreen(TFT_WHITE);
-    SCREEN_WIDTH = tft.width(); ;
+
+    SCREEN_WIDTH = tft.width();
     SCREEN_HEIGHT = tft.height();
 
+    tft.fillScreen(TFT_WHITE);
+
     touchSetup();
-
-    pongButton.draw();
-
     gamepadBegin();
 
-    pongButton.onClick = []() {
-        gameEnabled = !gameEnabled;
 
-        if (!gameEnabled) {
-            tft.fillScreen(TFT_WHITE);
-            ball.reset();
-            pongButton.draw();
-        }
+
+
+    pongButton.onClick = []() {
+        pongGameEnabled = true;
+        breakoutGameEnabled = false;
+
+        tft.fillScreen(TFT_WHITE);
+        ball.reset();
     };
+
+    breakoutButton.onClick = []() {
+        breakoutGameEnabled = true;
+        pongGameEnabled = false;
+
+        tft.fillScreen(TFT_WHITE);
+        ball.reset();
+    };
+    drawMenu();
 }
 
 void loop() {
 
-    // if (touchPressed()) {
-    //     TS_Point t = getTouch();
+    gamepadUpdate();
 
-    //     pongButton.handleTouch(t.x, t.y);
-    //     delay(150);
-    // }
+    if (touchPressed()) {
+        TS_Point t = getTouch();
 
-    // if (gameEnabled) {
-    //     ball.update();
-    //     ball.draw();
-    //     delay(20);
-    // }
+        if (!pongGameEnabled && !breakoutGameEnabled) {
+            pongButton.handleTouch(t.x, t.y);
+            breakoutButton.handleTouch(t.x, t.y);
+        }
 
-     gamepadUpdate();
-    if (gamepadGet(0)) Serial.println("Button 0 pressed");
-    if (gamepadGet(1)) Serial.println("Button 1 pressed");
-    if (gamepadGet(2)) Serial.println("Button 2 pressed");
-    if (gamepadGet(3)) Serial.println("Button 3 pressed");
-    if (gamepadGet(4)) Serial.println("Button 4 pressed");
-    if (gamepadGet(5)) Serial.println("Button 5 pressed");
-    if (gamepadGet(6)) Serial.println("Button 6 pressed");
-    if (gamepadGet(7)) Serial.println("Button 7 pressed");
+        delay(150);
+    }
 
-    // delay(100);
+    if (pongGameEnabled) {
+        ball.update();
+        paddle.update(false);
 
-    // digitalWrite(27, HIGH);
-    // delay(50);
-    // digitalWrite(27, LOW);
-    // delay(50);    
+        ball.draw();
+        paddle.draw();
+    }
 
+    if (breakoutGameEnabled) {
+        ball.update();
+        paddle.update(true);
+
+        ball.draw();
+        paddle.draw();
+    }
+
+    for (int i = 0; i < 8; i++) {
+        if (gamepadGet(i)) {
+            Serial.print("Button ");
+            Serial.print(i);
+            Serial.println(" pressed");
+        }
+    }
+    menu();
+    delay(20);
 }
