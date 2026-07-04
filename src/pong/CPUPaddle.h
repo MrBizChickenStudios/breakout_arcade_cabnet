@@ -3,9 +3,10 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include "GamePad.h"
+
 extern TFT_eSPI tft;
 
-class Paddle {
+class CPUPaddle {
 public:
     int x;
     int y;
@@ -16,9 +17,10 @@ public:
     int startX;
     int startY;
     int speed;
-    Paddle (int startX, int startY, int W, int H, int speed);
+    CPUPaddle (int startX, int startY, int W, int H, int speed);
 
     void draw();
-    void update(bool breakoutMode);
+    void update(int ballY, int ballX);
     void reset();
+    void move(int ballY, int ballX);
 };

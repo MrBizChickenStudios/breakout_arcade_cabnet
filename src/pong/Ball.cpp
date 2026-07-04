@@ -27,7 +27,11 @@ void Ball::reset() {
     oldY = startY;
 }
 
-void Ball::update(){
+void Ball::update(Paddle& paddle, CPUPaddle& cpuPaddle){
+    collision(paddle, cpuPaddle);
+}
+
+void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle){
     oldX = x;
     oldY = y;
     x += deltaX;
@@ -48,5 +52,17 @@ void Ball::update(){
         y = SCREEN_HEIGHT - radius;
         deltaY = -deltaY;
     }
+
+    if (x + radius >= paddle.x && x - radius <= paddle.x + paddle.width &&
+        y + radius >= paddle.y && y - radius <= paddle.y + paddle.height) {
+        y += 5;
+        deltaX = -deltaX;
+    }
+        if (x + radius >= cpuPaddle.x && x - radius <= cpuPaddle.x + cpuPaddle.width &&
+        y + radius >= cpuPaddle.y && y - radius <= cpuPaddle.y + cpuPaddle.height) {
+        y += 5;
+        deltaX = -deltaX;
+    }
+    
 }
 

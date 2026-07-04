@@ -2,8 +2,9 @@
 
 #include <Arduino.h>
 #include <TFT_eSPI.h>
+#include "Paddle.h"
+#include "CPUPaddle.h"
 
-extern TFT_eSPI tft;
 
 class Ball {
 public:
@@ -20,6 +21,7 @@ public:
     Ball(int startX, int startY, int r);
 
     void draw();
-    void update();
+    void update(Paddle& paddle, CPUPaddle& cpuPaddle);
     void reset();
+    void collision(Paddle& paddle, CPUPaddle& cpuPaddle);
 };
