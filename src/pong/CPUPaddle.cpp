@@ -1,12 +1,12 @@
 #include "CPUPaddle.h"
 #include "Constants.h"
 
-CPUPaddle::CPUPaddle(int startX, int startY, int width, int height, int speed) {
-    this->startX = startX;
-    this->startY = startY;
-    this->width = width;
-    this->height = height;
-    this->speed = speed;
+CPUPaddle::CPUPaddle() {
+    startX = SCREEN_WIDTH - 10;
+    startY = SCREEN_HEIGHT / 2;
+    width = 10;
+    height = 50;
+    speed = 5;
 
     x = startX;
     y = startY;
@@ -23,28 +23,43 @@ void CPUPaddle::draw() {
     tft.fillRect(x, y, width, height, TFT_BLACK);
 }
 
-void CPUPaddle::update(int ballY, int ballX)
+void CPUPaddle::update(int ballY, int ballX, int& screenBoxHeight)
 {
     oldX = x;
     oldY = y;
 
-    move(ballY, ballX);
-    draw();
+    move(ballY, ballX, screenBoxHeight);
+    
 }
 
-void CPUPaddle::move(int ballY, int ballX)
-{  
+void CPUPaddle::move(int ballY, int ballX, int& screenBoxHeight)
+{
+    oldX = x;
+    oldY = y;
 
-    if (ballX > tft.width() / 2){
-            int center = y + height / 2;
+    // Only track when ball is on CPU side
+    if (ballX > tft.width() / 2)
+    {
+        int center = y + height / 2;
+        
 
-        if (ballY > center) {
-            y += speed;
-            draw();
-        } else if (ballY < center) {
-            y -= speed;
-            draw();
+        int diff = ballY - center;
+
+    
+        if (abs(diff) > 3)
+        {
+            if (diff > 0)
+                y += speed;
+            else
+                y -= speed;
         }
+        draw();
     }
 
+    // Clamp movement
+    if (y < screenBoxHeight + 5)
+        y = screenBoxHeight + 5;
+
+    if (y + height > SCREEN_HEIGHT)
+        y = SCREEN_HEIGHT - height;
 }

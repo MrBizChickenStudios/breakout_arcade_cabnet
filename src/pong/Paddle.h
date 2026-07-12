@@ -17,10 +17,11 @@ public:
     int startX;
     int startY;
     int speed;
-    Paddle (int startX, int startY, int W, int H, int speed);
+    Paddle();
+
 
     void draw();
-    void update();
+    void update(int& screenBoxHeight);
     void reset();
-    void move();
+    void move(int& screenBoxHeight);
 };

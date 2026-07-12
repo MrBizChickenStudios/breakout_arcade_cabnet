@@ -17,10 +17,11 @@ public:
     int startX;
     int startY;
     int speed;
-    CPUPaddle (int startX, int startY, int W, int H, int speed);
+    CPUPaddle();
+    
 
     void draw();
-    void update(int ballY, int ballX);
+    void update(int ballY, int ballX, int& screenBoxHeight);
     void reset();
-    void move(int ballY, int ballX);
+    void move(int ballY, int ballX,  int& screenBoxHeight);
 };

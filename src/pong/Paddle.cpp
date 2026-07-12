@@ -1,12 +1,12 @@
 #include "Paddle.h"
 #include "Constants.h"
 
-Paddle::Paddle(int startX, int startY, int width, int height, int speed) {
-    this->startX = startX;
-    this->startY = startY;
-    this->width = width;
-    this->height = height;
-    this->speed = speed;
+Paddle::Paddle() {
+    startX = 10;
+    startY = SCREEN_HEIGHT / 2;
+    width = 10;
+    height = 50;
+    speed = 5;
 
     x = startX;
     y = startY;
@@ -21,28 +21,35 @@ void Paddle::draw() {
     tft.fillRect(x, y, width, height, TFT_BLACK);
 }
 
-void Paddle::update() {
+void Paddle::update(int& screenBoxHeight) {
     oldX = x;
     oldY = y;
 
-    move();
+    move(screenBoxHeight);
 
    
 }
 
-void Paddle::move() {
+void Paddle::move(int& screenBoxHeight) {
 
     
-    if (gamepadGet(0)) {
+    if (gamepadGet(4)) {
         y += speed;
         draw();
     }
 
    
-    if (gamepadGet(4)) {
+    if (gamepadGet(0)) {
         y -= speed;
         draw();
     }
 
+    if (y < screenBoxHeight) {
+        y = screenBoxHeight;
+    }
 
+    
+    if (y + height > SCREEN_HEIGHT) {
+        y = SCREEN_HEIGHT - height;
+    }
 }

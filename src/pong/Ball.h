@@ -18,10 +18,11 @@ public:
     int startX;
     int startY;
 
-    Ball(int startX, int startY, int r);
+    Ball();
+
 
     void draw();
-    void update(Paddle& paddle, CPUPaddle& cpuPaddle);
+    void update(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight);
     void reset();
-    void collision(Paddle& paddle, CPUPaddle& cpuPaddle);
+    void collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight);
 };

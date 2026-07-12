@@ -11,9 +11,8 @@
 #include "pong/Pong.h"
 TFT_eSPI tft;
 
-int SCREEN_WIDTH = 0;
-int SCREEN_HEIGHT = 0;
-Pong pong(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+
 // Paddle paddle(SCREEN_WIDTH + 2, SCREEN_HEIGHT / 2, 10, 50, 5);
 // // Paddle paddle2(100, 100, 50, 10, 5);
 
@@ -52,9 +51,6 @@ void setup() {
     tft.init();
     tft.setRotation(1);
 
-    SCREEN_WIDTH = tft.width();
-    SCREEN_HEIGHT = tft.height();
-
     tft.fillScreen(TFT_WHITE);
 
     // touchSetup();
@@ -82,6 +78,8 @@ void setup() {
 }
 
 void loop() {
+    Serial.print(tft.width());
+    Serial.print(tft.height());
     pong.draw();
     pong.update();
     gamepadUpdate();
