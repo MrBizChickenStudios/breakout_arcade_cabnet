@@ -4,11 +4,9 @@
 #include "ButtonObject.h"
 
 #include "GamePad.h"
-// #include "Paddle.h"
-#include "pong/Ball.h"
-#include "pong/Paddle.h"
-#include "pong/CPUPaddle.h"
+
 #include "pong/Pong.h"
+#include "breakout/Breakout.h"
 TFT_eSPI tft;
 
 
@@ -55,7 +53,8 @@ void setup() {
 
     // touchSetup();
     gamepadBegin();
-    pong.pongBegin();
+    // pong.pongBegin();
+    breakout.breakoutBegin();
 
 
 
@@ -81,8 +80,10 @@ void setup() {
 void loop() {
     Serial.print(tft.width());
     Serial.print(tft.height());
-    pong.draw();
-    pong.update();
+    // pong.draw();
+    // pong.update();
+    breakout.update();
+    breakout.draw();
     gamepadUpdate();
 
     // if (touchPressed()) {
