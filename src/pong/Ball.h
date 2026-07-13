@@ -8,6 +8,16 @@
 
 class Ball {
 public:
+
+
+    Ball();
+
+    int GetBallX() const;
+    int GetBallY() const;
+    void draw();
+    void update();
+   
+private:
     int x;
     int y;
     int radius;
@@ -17,12 +27,9 @@ public:
     int oldY;
     int startX;
     int startY;
-
-    Ball();
-
-
-    void draw();
-    void update(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight);
     void reset();
-    void collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight);
+    void collision();
+
+
 };
+extern Ball ball;

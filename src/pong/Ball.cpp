@@ -1,7 +1,11 @@
 #include "Ball.h"
 #include "Constants.h"
 #include "Pong.h"
+#include "Paddle.h"
+#include "CPUPaddle.h"
+#include "Score.h"
 
+Ball ball;
 
 Ball::Ball() {
     startX = SCREEN_WIDTH / 2;
@@ -11,15 +15,8 @@ Ball::Ball() {
     x = startX;
     y = startY;
     radius = 10;
-    // this->startX = startX;
-    // this->startY = startY;
-    // x = startX;
-    // y = startY;
-    // radius = r;
     deltaX = 2;
     deltaY = 2;
-    // oldX = startX;
-    // oldY = startY;
 }
 
 void Ball::draw() {
@@ -35,11 +32,12 @@ void Ball::reset() {
     oldY = startY;
 }
 
-void Ball::update(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight){
-    collision(paddle, cpuPaddle, playerScore, cpuScore, screenBoxHeight);
+void Ball::update(){
+
+    collision();
 }
 
-void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int& cpuScore, int& screenBoxHeight){
+void Ball::collision(){
     oldX = x;
     oldY = y;
     x += deltaX;
@@ -49,7 +47,7 @@ void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int
         tft.fillCircle(oldX, oldY, radius, TFT_WHITE);
         reset();
         deltaX = -deltaX;
-        cpuScore ++;
+        score.updateCpuPlayerScore();
         // pong.drawScore();
         
         return;
@@ -60,7 +58,8 @@ void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int
         tft.fillCircle(oldX, oldY, radius, TFT_WHITE);
         reset();
         deltaX = -deltaX;
-        playerScore ++;
+        score.updatePlayerScore();
+
         // pong.drawScore();
 
         return;
@@ -69,8 +68,8 @@ void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int
     
 
 
-    if (y - radius <= screenBoxHeight) {
-        y = screenBoxHeight + radius;
+    if (y - radius <= SCORE_BOX_HEIGHT) {
+        y = SCORE_BOX_HEIGHT + radius;
         deltaY = -deltaY;
     }
     
@@ -79,16 +78,23 @@ void Ball::collision(Paddle& paddle, CPUPaddle& cpuPaddle, int& playerScore, int
         deltaY = -deltaY;
     }
 
-    if (x + radius >= paddle.x && x - radius <= paddle.x + paddle.width &&
-        y + radius >= paddle.y && y - radius <= paddle.y + paddle.height) {
+    if (x + radius >= paddle.GetPlayerX() && x - radius <= paddle.GetPlayerX() + paddle.GetPlayerWidth() &&
+        y + radius >= paddle.GetPlayerY() && y - radius <= paddle.GetPlayerY() + paddle.GetPlayerHeight()) {
         y += 3;
         deltaX = -deltaX;
     }
-        if (x + radius >= cpuPaddle.x && x - radius <= cpuPaddle.x + cpuPaddle.width &&
-        y + radius >= cpuPaddle.y && y - radius <= cpuPaddle.y + cpuPaddle.height) {
+        if (x + radius >= cpuPaddle.GetCpuX() && x - radius <= cpuPaddle.GetCpuX() + cpuPaddle.GetCpuWidth() &&
+        y + radius >= cpuPaddle.GetCpuY() && y - radius <= cpuPaddle.GetCpuY() + cpuPaddle.GetCpuHeight()) {
         y += 3;
         deltaX = -deltaX;
     }
     
+}
+int Ball::GetBallX() const{
+    return x;
+}
+
+int Ball::GetBallY() const{
+    return y;
 }
 

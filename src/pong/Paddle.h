@@ -8,6 +8,18 @@ extern TFT_eSPI tft;
 
 class Paddle {
 public:
+
+    Paddle();
+
+    int GetPlayerX() const;
+    int GetPlayerY() const;
+    int GetPlayerWidth() const;
+    int GetPlayerHeight() const;
+    void draw();
+    void update();
+    void begin();
+
+    private:
     int x;
     int y;
     int width = 10;
@@ -17,11 +29,9 @@ public:
     int startX;
     int startY;
     int speed;
-    Paddle();
-
-
-    void draw();
-    void update(int& screenBoxHeight);
     void reset();
-    void move(int& screenBoxHeight);
+    void move();
+
 };
+
+extern Paddle paddle;

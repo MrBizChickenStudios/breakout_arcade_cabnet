@@ -55,6 +55,7 @@ void setup() {
 
     // touchSetup();
     gamepadBegin();
+    pong.pongBegin();
 
 
 

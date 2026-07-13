@@ -1,5 +1,7 @@
 #include "CPUPaddle.h"
 #include "Constants.h"
+#include "Ball.h"
+CPUPaddle cpuPaddle;
 
 CPUPaddle::CPUPaddle() {
     startX = SCREEN_WIDTH - 10;
@@ -23,27 +25,27 @@ void CPUPaddle::draw() {
     tft.fillRect(x, y, width, height, TFT_BLACK);
 }
 
-void CPUPaddle::update(int ballY, int ballX, int& screenBoxHeight)
+void CPUPaddle::update()
 {
     oldX = x;
     oldY = y;
 
-    move(ballY, ballX, screenBoxHeight);
+    move();
     
 }
 
-void CPUPaddle::move(int ballY, int ballX, int& screenBoxHeight)
+void CPUPaddle::move()
 {
     oldX = x;
     oldY = y;
 
     // Only track when ball is on CPU side
-    if (ballX > tft.width() / 2)
+    if (ball.GetBallX()> tft.width() / 2)
     {
         int center = y + height / 2;
         
 
-        int diff = ballY - center;
+        int diff = ball.GetBallY() - center;
 
     
         if (abs(diff) > 3)
@@ -57,9 +59,25 @@ void CPUPaddle::move(int ballY, int ballX, int& screenBoxHeight)
     }
 
     // Clamp movement
-    if (y < screenBoxHeight + 5)
-        y = screenBoxHeight + 5;
+    if (y < SCORE_BOX_HEIGHT + 5)
+        y = SCORE_BOX_HEIGHT + 5;
 
     if (y + height > SCREEN_HEIGHT)
         y = SCREEN_HEIGHT - height;
+}
+
+int CPUPaddle::GetCpuX() const{
+    return x;
+}
+
+int CPUPaddle::GetCpuY() const{
+    return y;
+}
+
+int CPUPaddle::GetCpuWidth() const{
+    return width;
+}
+
+int CPUPaddle::GetCpuHeight() const{
+    return height;
 }

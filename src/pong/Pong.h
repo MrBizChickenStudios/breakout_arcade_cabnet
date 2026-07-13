@@ -13,11 +13,10 @@ public:
     void draw();
     void update();
     void drawScore();
+    void pongBegin();
 
 private:
-    Ball ball;
-    Paddle paddle;
-    CPUPaddle cpuPaddle;
+
 
     int playerScore = 0;
     int cpuScore = 0;

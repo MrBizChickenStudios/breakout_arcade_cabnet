@@ -1,6 +1,8 @@
 #include "Paddle.h"
 #include "Constants.h"
 
+Paddle paddle;
+
 Paddle::Paddle() {
     startX = 10;
     startY = SCREEN_HEIGHT / 2;
@@ -14,23 +16,25 @@ Paddle::Paddle() {
     oldX = x;
     oldY = y;
 }
-
+void Paddle::begin(){
+    draw();
+}
 void Paddle::draw() {
    
     tft.fillRect(oldX, oldY, width, height, TFT_WHITE);
     tft.fillRect(x, y, width, height, TFT_BLACK);
 }
 
-void Paddle::update(int& screenBoxHeight) {
+void Paddle::update() {
     oldX = x;
     oldY = y;
 
-    move(screenBoxHeight);
+    move();
 
    
 }
 
-void Paddle::move(int& screenBoxHeight) {
+void Paddle::move() {
 
     
     if (gamepadGet(4)) {
@@ -44,12 +48,29 @@ void Paddle::move(int& screenBoxHeight) {
         draw();
     }
 
-    if (y < screenBoxHeight) {
-        y = screenBoxHeight;
+    if (y < SCORE_BOX_HEIGHT) {
+        y = SCORE_BOX_HEIGHT;
     }
 
     
     if (y + height > SCREEN_HEIGHT) {
         y = SCREEN_HEIGHT - height;
     }
+}
+
+
+int Paddle::GetPlayerX() const{
+    return x;
+}
+
+int Paddle::GetPlayerY() const{
+    return y;
+}
+
+int Paddle::GetPlayerWidth() const{
+    return width;
+}
+
+int Paddle::GetPlayerHeight() const{
+    return height;
 }

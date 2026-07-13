@@ -8,6 +8,18 @@ extern TFT_eSPI tft;
 
 class CPUPaddle {
 public:
+
+    CPUPaddle();
+    int GetCpuX() const;
+    int GetCpuY() const;
+    int GetCpuWidth() const;
+    int GetCpuHeight() const;
+
+    void draw();
+    void update();
+
+
+private:
     int x;
     int y;
     int width = 10;
@@ -17,11 +29,8 @@ public:
     int startX;
     int startY;
     int speed;
-    CPUPaddle();
-    
-
-    void draw();
-    void update(int ballY, int ballX, int& screenBoxHeight);
     void reset();
-    void move(int ballY, int ballX,  int& screenBoxHeight);
+    void move(); 
 };
+
+extern CPUPaddle cpuPaddle;
